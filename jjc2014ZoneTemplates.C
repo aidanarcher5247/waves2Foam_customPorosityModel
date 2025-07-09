@@ -64,6 +64,9 @@ void Foam::jjc2014Zone::addViscousInertialResistance
     forAll (cells, i)
     {
 //         tensor dragCoeff = mu[cells[i]]*D + (rho[cells[i]]*mag(U[cells[i]]))*F;
+        
+        const scalar magUxy = sqrt(U[cells[i]].x()*U[cells[i]].x() + U[cells[i]].y()*U[cells[i]].y());
+        tensor dragCoeff = mu[cells[i]]*D + (rho[cells[i]]*magUxy)*F;
         scalar isoDragCoeff = tr(dragCoeff);
 
         Udiag[cells[i]] += V[cells[i]]*isoDragCoeff;
@@ -88,6 +91,8 @@ void Foam::jjc2014Zone::addViscousInertialResistance
     forAll (cells, i)
     {
 //         AU[cells[i]] += mu[cells[i]]*D + (rho[cells[i]]*mag(U[cells[i]]))*F;
+        const scalar magUxy = sqrt(U[cells[i]].x()*U[cells[i]].x() + U[cells[i]].y()*U[cells[i]].y());
+        AU[cells[i]] += mu[cells[i]]*D + (rho[cells[i]]*magUxy)*F;
     }
 }
 
